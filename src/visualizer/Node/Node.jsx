@@ -10,7 +10,14 @@ const Node = props => {
     ? "node-finish"
     : "";
 
-  return <div className={`node ${isStartorFinish}`}></div>;
+  // const isVisited = props.visited ? "node-visited" : "";
+
+  return (
+    <div
+      id={`node-${props.row}-${props.col}`}
+      className={`node ${isStartorFinish}`}
+    ></div>
+  );
 };
 
 export default Node;
