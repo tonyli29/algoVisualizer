@@ -1,0 +1,12 @@
+.node {
+  width: 25px;
+  height: 25px;
+  outline: 1px solid black;
+  display: inline-block;
+}
+.node-start {
+  background-color: red;
+}
+.node-finish {
+  background-color: blue;
+}
