@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node/Node";
-import dijkstra from "./algorithms/dijkstra";
+import { dijkstra } from "./algorithms/dijkstra";
 
 const PathFinder = props => {
   const [grid, setGrid] = useState([]);
+  const [test, setTest] = useState([
+    {
+      num: 0
+    },
+    {
+      num: 1
+    }
+  ]);
 
   const START_ROW = 10;
   const START_COL = 5;
@@ -35,7 +43,8 @@ const PathFinder = props => {
       isStart: row == START_ROW && col == START_COL,
       isFinish: row == FINISH_ROW && col == FINISH_COL,
       distance: Infinity,
-      visited: false
+      visited: false,
+      isWall: false
     };
   };
 
@@ -45,7 +54,7 @@ const PathFinder = props => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 10 * i);
+      }, 5 * i);
     }
   }
 
@@ -57,9 +66,18 @@ const PathFinder = props => {
     // dijkstra(grid, START, FINISH);
   }
 
+  const handleClick = (row, col) => {
+    const newGrid = grid.slice();
+    const node = newGrid[row][col];
+    const newNode = { ...node, isWall: true };
+    newGrid[row][col] = newNode;
+    setGrid(newGrid);
+  };
+
   return (
     <div>
       <button onClick={() => VisualizeDijkstra()}>test</button>
+
       {grid.map((row, rowId) => {
         return (
           <div key={rowId}>
@@ -70,7 +88,9 @@ const PathFinder = props => {
                 row={node.row}
                 isStart={node.isStart}
                 isFinish={node.isFinish}
+                isWall={node.isWall}
                 visited={node.visited}
+                handleClick={(row, col) => handleClick(row, col)}
               ></Node>
             ))}
           </div>

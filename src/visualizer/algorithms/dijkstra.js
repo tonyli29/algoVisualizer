@@ -1,10 +1,12 @@
-function dijkstra(grid, startNode, finishNode) {
+export function dijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
   const vistedNodes = [];
   const unvistedNodes = allNodes(grid);
   while (!!unvistedNodes.length) {
     sortNodesDistance(unvistedNodes);
     const closestNode = unvistedNodes.shift();
+    if (closestNode.isWall) continue;
+    if (closestNode.distance === Infinity) return vistedNodes;
     closestNode.visited = true;
     vistedNodes.push(closestNode);
     // for animation
@@ -21,6 +23,7 @@ function updateUnvisitedNeighbors(node, grid) {
   const unvistedNeighbors = getUnvisitedNeighbors(node, grid);
   for (const nodes of unvistedNeighbors) {
     nodes.distance = node.distance + 1;
+    node.previousNode = node;
   }
 }
 
@@ -44,4 +47,13 @@ function allNodes(grid) {
   return allNodes;
 }
 
-export default dijkstra;
+// export function nodesInShortestPath(grid, startNode, finishNode) {
+//   const shortestPath = [];
+//   let currentNode = finishNode;
+//   while (currentNode !== null) {
+//     shortestPath.unshift(currentNode);
+//     currentNode = currentNode.previousNode;
+//   }
+//   console.log(shortestPath);
+//   return shortestPath;
+// }

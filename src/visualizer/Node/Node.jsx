@@ -4,10 +4,12 @@ import "./Node.css";
 const Node = props => {
   const [state, setState] = useState([]);
 
-  const isStartorFinish = props.isStart
+  const classNames = props.isStart
     ? "node-start"
     : props.isFinish
     ? "node-finish"
+    : props.isWall
+    ? "node-wall"
     : "";
 
   // const isVisited = props.visited ? "node-visited" : "";
@@ -15,9 +17,9 @@ const Node = props => {
   return (
     <div
       id={`node-${props.row}-${props.col}`}
-      className={`node ${isStartorFinish}`}
+      className={`node ${classNames}`}
+      onClick={() => props.handleClick(props.row, props.col)}
     ></div>
   );
 };
-
 export default Node;

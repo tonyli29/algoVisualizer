@@ -13,3 +13,6 @@
 .node-visited {
   background-color: green;
 }
+.node-wall {
+  background-color: grey;
+}
