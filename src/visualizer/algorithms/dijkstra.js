@@ -25,8 +25,19 @@ function sortNodesDistance(unvistedNodes) {
 function updateUnvisitedNeighbors(node, grid) {
   const unvistedNeighbors = getUnvisitedNeighbors(node, grid);
   for (const nodes of unvistedNeighbors) {
-    nodes.distance = node.distance + 1;
-    nodes.previousNode = node;
+    const { row, col } = nodes;
+    const previous = nodes.previousNode;
+    // Trying to make dijkstra weighted
+    if (previous === null || previous.previousNode === null) {
+      nodes.distance = node.distance + 1;
+      nodes.previousNode = node;
+    } else if (
+      previous.previousNode.row ===
+      ((row + 1 && (col - 1 || col + 1)) || (row - 1 && (col - 1 || col + 1)))
+    ) {
+      nodes.distance = node.distance + 10;
+      nodes.previousNode = node;
+    }
   }
 }
 
@@ -57,5 +68,6 @@ export function getNodesInShortestPathOrder(finishNode) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.previousNode;
   }
+  console.log(nodesInShortestPathOrder);
   return nodesInShortestPathOrder;
 }

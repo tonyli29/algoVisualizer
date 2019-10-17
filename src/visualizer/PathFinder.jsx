@@ -58,7 +58,7 @@ const PathFinder = props => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 7 * i);
+      }, 5 * i);
     }
   }
 
@@ -68,7 +68,7 @@ const PathFinder = props => {
         const node = shortestPath[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-shortest";
-      }, 30 * i);
+      }, 10 * i);
     }
   }
 
@@ -106,14 +106,6 @@ const PathFinder = props => {
       setGrid(newGrid);
     }
   }
-
-  // const handleMouseUp = (row, col) => {
-  //   const newGrid = grid.slice();
-  //   const node = newGrid[row][col];
-  //   const newNode = { ...node, mouseEntered: false };
-  //   newGrid[row][col] = newNode;
-  //   setGrid(newGrid);
-  // };
 
   return (
     <div>
