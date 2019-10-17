@@ -12,13 +12,16 @@ const Node = props => {
     ? "node-wall"
     : "";
 
-  // const isVisited = props.visited ? "node-visited" : "";
+  const nodeTracker = props.nodeTracker ? "node-tracker" : "";
 
   return (
     <div
       id={`node-${props.row}-${props.col}`}
-      className={`node ${classNames}`}
-      onClick={() => props.handleClick(props.row, props.col)}
+      className={`node ${classNames} ${nodeTracker}`}
+      onClick={() => props.handleMouseClick(props.row, props.col)}
+      onMouseDown={() => props.mouseDown(props.row, props.col)}
+      onMouseUp={() => props.mouseUp(props.row, props.col)}
+      onMouseEnter={() => props.mouseEnter(props.row, props.col)}
     ></div>
   );
 };

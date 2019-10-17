@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node/Node";
-import { dijkstra } from "./algorithms/dijkstra";
+import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra";
 
 const PathFinder = props => {
   const [grid, setGrid] = useState([]);
-  const [test, setTest] = useState([
-    {
-      num: 0
-    },
-    {
-      num: 1
-    }
-  ]);
+  const [mouse, setMouse] = useState({ mousePressed: false });
 
   const START_ROW = 10;
   const START_COL = 5;
@@ -44,17 +37,38 @@ const PathFinder = props => {
       isFinish: row == FINISH_ROW && col == FINISH_COL,
       distance: Infinity,
       visited: false,
-      isWall: false
+      isWall: false,
+      previousNode: null,
+      mousePressed: false,
+      nodeTracker: false
     };
   };
 
   function animateDijkstra(visitedNodesforAnimation) {
     for (let i = 0; i < visitedNodesforAnimation.length; i++) {
+      if (i + 1 === visitedNodesforAnimation.length) {
+        const shortestPath = getNodesInShortestPathOrder(
+          grid[FINISH_ROW][FINISH_COL]
+        );
+        setTimeout(() => {
+          animateShortestPath(shortestPath);
+        }, 8 * i);
+      }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 5 * i);
+      }, 7 * i);
+    }
+  }
+
+  function animateShortestPath(shortestPath) {
+    for (let i = 0; i < shortestPath.length; i++) {
+      setTimeout(() => {
+        const node = shortestPath[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          "node node-shortest";
+      }, 30 * i);
     }
   }
 
@@ -63,20 +77,54 @@ const PathFinder = props => {
     const FINISH = grid[FINISH_ROW][FINISH_COL];
     const visitedNodesforAnimation = dijkstra(grid, START, FINISH);
     animateDijkstra(visitedNodesforAnimation);
-    // dijkstra(grid, START, FINISH);
   }
 
-  const handleClick = (row, col) => {
+  function handleMouseClick(row, col) {
     const newGrid = grid.slice();
     const node = newGrid[row][col];
-    const newNode = { ...node, isWall: true };
+    const newNode = { ...node, isWall: !node.isWall };
     newGrid[row][col] = newNode;
     setGrid(newGrid);
-  };
+  }
+
+  function mouseDown(row, col) {
+    setMouse({
+      mousePressed: true
+    });
+  }
+  function mouseUp(row, col) {
+    setMouse({
+      mousePressed: false
+    });
+  }
+  function mouseEnter(row, col) {
+    const newGrid = grid.slice();
+    const node = newGrid[row][col];
+    if (mouse.mousePressed) {
+      const newNode = { ...node, isWall: true };
+      newGrid[row][col] = newNode;
+      setGrid(newGrid);
+    }
+  }
+
+  // const handleMouseUp = (row, col) => {
+  //   const newGrid = grid.slice();
+  //   const node = newGrid[row][col];
+  //   const newNode = { ...node, mouseEntered: false };
+  //   newGrid[row][col] = newNode;
+  //   setGrid(newGrid);
+  // };
 
   return (
     <div>
       <button onClick={() => VisualizeDijkstra()}>test</button>
+      <button
+        onClick={() =>
+          getNodesInShortestPathOrder(grid[FINISH_ROW][FINISH_COL])
+        }
+      >
+        test
+      </button>
 
       {grid.map((row, rowId) => {
         return (
@@ -90,7 +138,11 @@ const PathFinder = props => {
                 isFinish={node.isFinish}
                 isWall={node.isWall}
                 visited={node.visited}
-                handleClick={(row, col) => handleClick(row, col)}
+                nodeTracker={node.nodeTracker}
+                handleMouseClick={(row, col) => handleMouseClick(row, col)}
+                mouseDown={(row, col) => mouseDown(row, col)}
+                mouseUp={(row, col) => mouseUp(row, col)}
+                mouseEnter={(row, col) => mouseEnter(row, col)}
               ></Node>
             ))}
           </div>

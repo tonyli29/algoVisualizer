@@ -16,3 +16,9 @@
 .node-wall {
   background-color: grey;
 }
+.node-tracker {
+  background-color: yellow;
+}
+.node-shortest {
+  background-color: hotpink;
+}
