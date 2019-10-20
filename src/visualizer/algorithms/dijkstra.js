@@ -5,9 +5,6 @@ export function dijkstra(grid, startNode, finishNode) {
   while (!!unvistedNodes.length) {
     sortNodesDistance(unvistedNodes);
     const closestNode = unvistedNodes.shift();
-    // closestNode.nodeTracker = true;
-    // if (vistedNodes.length > 0)
-    //   vistedNodes[vistedNodes.length - 1].nodeTracker = false;
     if (closestNode.isWall) continue;
     if (closestNode.distance === Infinity) return vistedNodes;
     closestNode.visited = true;
@@ -22,8 +19,31 @@ function sortNodesDistance(unvistedNodes) {
   unvistedNodes.sort((a, b) => a.distance - b.distance);
 }
 
+// function updateUnvisitedNeighbors(node, grid) {
+//   const unvistedNeighbors = getUnvisitedNeighbors(node, grid);
+//   const diagonalNeighbors = getDiagonalNeighbors(node, grid);
+//   node.diagonal = diagonalNeighbors;
+//   const previous = node.previousNode;
+//   for (const nodes of unvistedNeighbors) {
+//     // if (previous === null || previous.previousNode === null) {
+//     //   nodes.distance = node.distance + 1;
+//     //   console.log("not");
+//     // } else if (diagonalNeighbors.includes(previous.previousNode)) {
+//     //   previous.previousNode.distance = previous.previousNode.distance + 0.4;
+//     //   console.log("yet");
+//     // } else {
+//     //   console.log("H");
+//     //   nodes.distance = node.distance + 1;
+//     // }
+//     nodes.distance = node.distance + 1;
+//     nodes.previousNode = node;
+//   }
+// }
+
 function updateUnvisitedNeighbors(node, grid) {
   const unvistedNeighbors = getUnvisitedNeighbors(node, grid);
+  const diagonalNeighbors = getDiagonalNeighbors(node, grid);
+  node.diagonal = diagonalNeighbors;
   for (const nodes of unvistedNeighbors) {
     const { row, col } = nodes;
     const previous = nodes.previousNode;
@@ -31,23 +51,75 @@ function updateUnvisitedNeighbors(node, grid) {
     if (previous === null || previous.previousNode === null) {
       nodes.distance = node.distance + 1;
       nodes.previousNode = node;
-    } else if (
-      previous.previousNode.row ===
-      ((row + 1 && (col - 1 || col + 1)) || (row - 1 && (col - 1 || col + 1)))
-    ) {
-      nodes.distance = node.distance + 10;
+    } else if (diagonalNeighbors.includes(previous.previousNode)) {
+      nodes.distance = node.distance + 1.4;
       nodes.previousNode = node;
     }
   }
 }
 
+export function getDiagonalNeighbors(node, grid) {
+  const diagonalNeighbors = [];
+  const { row, col } = node;
+  if (row === 0 && col === 0) {
+    diagonalNeighbors.push(grid[row + 1][col + 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (row === 0 && col === 49) {
+    diagonalNeighbors.push(grid[row + 1][col - 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (row === 19 && col === 0) {
+    diagonalNeighbors.push(grid[row - 1][col + 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (row === 19 && col === 49) {
+    diagonalNeighbors.push(grid[row - 1][col - 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (row === 0) {
+    diagonalNeighbors.push(grid[row + 1][col - 1], grid[row + 1][col + 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (row === 19) {
+    diagonalNeighbors.push(grid[row - 1][col - 1], grid[row - 1][col + 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (col === 0) {
+    diagonalNeighbors.push(grid[row + 1][col + 1], grid[row - 1][col + 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (col === 49) {
+    diagonalNeighbors.push(grid[row + 1][col - 1], grid[row - 1][col - 1]);
+    // console.log(diagonalNeighbors);
+    return diagonalNeighbors;
+  }
+  if (row > 0)
+    diagonalNeighbors.push(grid[row - 1][col - 1], grid[row - 1][col + 1]);
+  if (row < grid.length - 1)
+    diagonalNeighbors.push(grid[row + 1][col - 1], grid[row + 1][col + 1]);
+  // console.log(diagonalNeighbors);
+  return diagonalNeighbors;
+}
+
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
+  const diagonalNeighbors = getDiagonalNeighbors(node, grid);
   const { col, row } = node;
   if (row > 0) neighbors.push(grid[row - 1][col]);
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  // for (const dia in diagonalNeighbors) {
+  //   neighbors.push(dia);
+  // }
   return neighbors.filter(neighbors => !neighbors.visited);
 }
 
@@ -68,6 +140,5 @@ export function getNodesInShortestPathOrder(finishNode) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.previousNode;
   }
-  console.log(nodesInShortestPathOrder);
   return nodesInShortestPathOrder;
 }

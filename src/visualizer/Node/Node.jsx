@@ -22,7 +22,9 @@ const Node = props => {
       onMouseDown={() => props.mouseDown(props.row, props.col)}
       onMouseUp={() => props.mouseUp(props.row, props.col)}
       onMouseEnter={() => props.mouseEnter(props.row, props.col)}
-    ></div>
+    >
+      {props.row}|{props.col}
+    </div>
   );
 };
 export default Node;

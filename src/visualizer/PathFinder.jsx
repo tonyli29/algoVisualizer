@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node/Node";
-import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra";
+import "./PathFinder.css";
+import {
+  dijkstra,
+  getNodesInShortestPathOrder,
+  getDiagonalNeighbors
+} from "./algorithms/dijkstra";
 
 const PathFinder = props => {
   const [grid, setGrid] = useState([]);
@@ -40,7 +45,8 @@ const PathFinder = props => {
       isWall: false,
       previousNode: null,
       mousePressed: false,
-      nodeTracker: false
+      nodeTracker: false,
+      diagonal: []
     };
   };
 
@@ -52,7 +58,7 @@ const PathFinder = props => {
         );
         setTimeout(() => {
           animateShortestPath(shortestPath);
-        }, 8 * i);
+        }, 6 * i);
       }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
@@ -68,7 +74,7 @@ const PathFinder = props => {
         const node = shortestPath[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-shortest";
-      }, 10 * i);
+      }, 8 * i);
     }
   }
 
@@ -108,38 +114,33 @@ const PathFinder = props => {
   }
 
   return (
-    <div>
+    <div className="main-container">
       <button onClick={() => VisualizeDijkstra()}>test</button>
-      <button
-        onClick={() =>
-          getNodesInShortestPathOrder(grid[FINISH_ROW][FINISH_COL])
-        }
-      >
-        test
-      </button>
 
-      {grid.map((row, rowId) => {
-        return (
-          <div key={rowId}>
-            {row.map((node, nodeId) => (
-              <Node
-                key={nodeId}
-                col={node.col}
-                row={node.row}
-                isStart={node.isStart}
-                isFinish={node.isFinish}
-                isWall={node.isWall}
-                visited={node.visited}
-                nodeTracker={node.nodeTracker}
-                handleMouseClick={(row, col) => handleMouseClick(row, col)}
-                mouseDown={(row, col) => mouseDown(row, col)}
-                mouseUp={(row, col) => mouseUp(row, col)}
-                mouseEnter={(row, col) => mouseEnter(row, col)}
-              ></Node>
-            ))}
-          </div>
-        );
-      })}
+      <div className="main-grid">
+        {grid.map((row, rowId) => {
+          return (
+            <div key={rowId}>
+              {row.map((node, nodeId) => (
+                <Node
+                  key={nodeId}
+                  col={node.col}
+                  row={node.row}
+                  isStart={node.isStart}
+                  isFinish={node.isFinish}
+                  isWall={node.isWall}
+                  visited={node.visited}
+                  nodeTracker={node.nodeTracker}
+                  handleMouseClick={(row, col) => handleMouseClick(row, col)}
+                  mouseDown={(row, col) => mouseDown(row, col)}
+                  mouseUp={(row, col) => mouseUp(row, col)}
+                  mouseEnter={(row, col) => mouseEnter(row, col)}
+                ></Node>
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
