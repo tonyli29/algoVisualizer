@@ -58,13 +58,13 @@ const PathFinder = props => {
         );
         setTimeout(() => {
           animateShortestPath(shortestPath);
-        }, 6 * i);
+        }, 10 * i);
       }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 5 * i);
+      }, 10 * i);
     }
   }
 
@@ -74,7 +74,7 @@ const PathFinder = props => {
         const node = shortestPath[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-shortest";
-      }, 8 * i);
+      }, 30 * i);
     }
   }
 
@@ -113,10 +113,29 @@ const PathFinder = props => {
     }
   }
 
+  function resetButton() {
+    for (let row = 0; row < 20; row++) {
+      const currentRow = [];
+      for (let col = 0; col < 50; col++) {
+        if (col === START_COL && row === START_ROW) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-start";
+        } else if (col === FINISH_COL && row === FINISH_ROW) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-finish";
+        } else {
+          document.getElementById(`node-${row}-${col}`).className = "node";
+        }
+      }
+    }
+
+    setGrid(getInitialGrid());
+  }
+
   return (
     <div className="main-container">
-      <button onClick={() => VisualizeDijkstra()}>test</button>
-
+      <button onClick={() => VisualizeDijkstra()}>Visualize</button>
+      <button onClick={() => resetButton()}>Reset</button>
       <div className="main-grid">
         {grid.map((row, rowId) => {
           return (
