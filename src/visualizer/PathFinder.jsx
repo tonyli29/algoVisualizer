@@ -46,7 +46,8 @@ const PathFinder = props => {
       previousNode: null,
       mousePressed: false,
       nodeTracker: false,
-      diagonal: []
+      diagonal: [],
+      up: null
     };
   };
 
@@ -58,13 +59,13 @@ const PathFinder = props => {
         );
         setTimeout(() => {
           animateShortestPath(shortestPath);
-        }, 10 * i);
+        }, 8 * i);
       }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 10 * i);
+      }, 8 * i);
     }
   }
 
