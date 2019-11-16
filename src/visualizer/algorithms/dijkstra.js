@@ -1,5 +1,3 @@
-import { clone } from "@babel/types";
-
 export function dijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
   const vistedNodes = [];
@@ -15,6 +13,13 @@ export function dijkstra(grid, startNode, finishNode) {
     // for animation
     if (closestNode == finishNode) return vistedNodes;
 
+    // if (UP) {
+    //   updateUnvisitedNeighborsUP(closestNode, grid);
+    // } else {
+    //   updateUnvisitedNeighborsDOWN(closestNode, grid);
+    // }
+
+    // updateUnvisitedNeighborsUP(closestNode, grid);
     // if (closestNode.previousNode !== null) {
     //   if (closestNode.previousNode.row > closestNode.row) {
     //     var UP = true;
@@ -24,13 +29,7 @@ export function dijkstra(grid, startNode, finishNode) {
     // } else {
     //   updateUnvisitedNeighborsDOWN(closestNode, grid);
     // }
-    // if (UP) {
-    //   updateUnvisitedNeighborsUP(closestNode, grid);
-    // } else {
-    //   updateUnvisitedNeighborsDOWN(closestNode, grid);
-    // }
-
-    updateUnvisitedNeighborsUP(closestNode, grid);
+    updateUnvisitedNeighborsDOWN(closestNode, grid);
   }
 }
 
@@ -41,19 +40,17 @@ function sortNodesDistance(unvistedNodes) {
 // makes weighted when going down
 function updateUnvisitedNeighborsDOWN(node, grid) {
   const unvistedNeighbors = getUnvisitedNeighbors(node, grid);
+  const getNeighbors = getAllNeighbors(node, grid);
   const diagonalNeighbors = getDiagonalNeighbors(node, grid);
   node.diagonal = diagonalNeighbors;
   for (const nodes of unvistedNeighbors) {
-    const previous = nodes.previousNode;
-    // Trying to make dijkstra weighted
-    if (previous === null || previous.previousNode === null) {
-      nodes.distance = node.distance + 1;
-      nodes.previousNode = node;
-    } else {
-      nodes.distance = node.distance + 1;
-      nodes.previousNode = node;
-    }
+    nodes.distance = node.distance + 1;
+    nodes.previousNode = node;
   }
+  for (const neighbors of getNeighbors) {
+    node.testPrevious.push(neighbors);
+  }
+  console.log(node.testPrevious);
 }
 
 // makes weighted going up
@@ -64,15 +61,8 @@ function updateUnvisitedNeighborsUP(node, grid) {
   for (const nodes of unvistedNeighbors) {
     const { row, col } = nodes;
     const previous = nodes.previousNode;
-    // Trying to make dijkstra weighted
-    if (previous === null) {
-      nodes.distance = node.distance + 1;
-      nodes.previousNode = node;
-    }
-
-    // nodes.distance = node.distance + 1;
-    // nodes.previousNode = node;
-    // console.log("if");
+    nodes.distance = node.distance + 1;
+    nodes.previousNode = node;
   }
 }
 function updateUnvisitedNeighborsNEUTRAL(node, grid) {
@@ -142,10 +132,24 @@ function getUnvisitedNeighbors(node, grid) {
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  // for (const dia in diagonalNeighbors) {
-  //   neighbors.push(dia);
+  // for (let i = 0; i < diagonalNeighbors.length; i++) {
+  //   neighbors.push(diagonalNeighbors[i]);
   // }
   return neighbors.filter(neighbors => !neighbors.visited);
+}
+
+function getAllNeighbors(node, grid) {
+  const neighbors = [];
+  const diagonalNeighbors = getDiagonalNeighbors(node, grid);
+  const { col, row } = node;
+  if (row > 0) neighbors.push(grid[row - 1][col]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (col > 0) neighbors.push(grid[row][col - 1]);
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  // for (let i = 0; i < diagonalNeighbors.length; i++) {
+  //   neighbors.push(diagonalNeighbors[i]);
+  // }
+  return neighbors;
 }
 
 function allNodes(grid) {

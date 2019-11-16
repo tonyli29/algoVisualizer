@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node/Node";
 import "./PathFinder.css";
-import {
-  dijkstra,
-  getNodesInShortestPathOrder,
-  getDiagonalNeighbors
-} from "./algorithms/dijkstra";
+import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra";
+import { astar, astarShortest } from "./algorithms/astar.js";
 
 const PathFinder = props => {
   const [grid, setGrid] = useState([]);
@@ -44,10 +41,13 @@ const PathFinder = props => {
       visited: false,
       isWall: false,
       previousNode: null,
+      testPrevious: [],
       mousePressed: false,
       nodeTracker: false,
       diagonal: [],
-      up: null
+      f: Infinity,
+      g: Infinity,
+      h: 0
     };
   };
 
@@ -59,13 +59,29 @@ const PathFinder = props => {
         );
         setTimeout(() => {
           animateShortestPath(shortestPath);
-        }, 8 * i);
+        }, 10 * i);
       }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 8 * i);
+      }, 10 * i);
+    }
+  }
+
+  function animateAstar(visitedNodesforAnimation) {
+    for (let i = 0; i < visitedNodesforAnimation.length; i++) {
+      if (i + 1 === visitedNodesforAnimation.length) {
+        const shortestPath = astarShortest(grid[FINISH_ROW][FINISH_COL]);
+        setTimeout(() => {
+          animateShortestPath(shortestPath);
+        }, 7 * i);
+      }
+      setTimeout(() => {
+        const node = visitedNodesforAnimation[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          "node node-visited";
+      }, 7 * i);
     }
   }
 
@@ -84,6 +100,13 @@ const PathFinder = props => {
     const FINISH = grid[FINISH_ROW][FINISH_COL];
     const visitedNodesforAnimation = dijkstra(grid, START, FINISH);
     animateDijkstra(visitedNodesforAnimation);
+  }
+
+  function VisualizeAstar() {
+    const START = grid[START_ROW][START_COL];
+    const FINISH = grid[FINISH_ROW][FINISH_COL];
+    const visitedNodesforAnimation = astar(grid, START, FINISH);
+    animateAstar(visitedNodesforAnimation);
   }
 
   function handleMouseClick(row, col) {
@@ -133,10 +156,28 @@ const PathFinder = props => {
     setGrid(getInitialGrid());
   }
 
+  function removeVisted() {
+    for (let i = 0; i < grid.length; i++) {
+      const element = grid[i];
+      for (let j = 0; j < element.length; j++) {
+        console.log(element[j]);
+        if (element[j].isWall || element[j].isStart || element[j].isFinish) {
+          continue;
+        } else {
+          document.getElementById(
+            `node-${element[j].row}-${element[j].col}`
+          ).className = "node";
+        }
+      }
+    }
+  }
+
   return (
     <div className="main-container">
       <button onClick={() => VisualizeDijkstra()}>Visualize</button>
       <button onClick={() => resetButton()}>Reset</button>
+      <button onClick={() => VisualizeAstar()}>Astar</button>
+      <button onClick={() => removeVisted()}>Asdddtar</button>
       <div className="main-grid">
         {grid.map((row, rowId) => {
           return (
