@@ -7,6 +7,7 @@ export function astar(grid, startNode, finishNode) {
     sortNodesF(unvistedNodes);
     const closestNode = unvistedNodes.shift();
     if (closestNode.isWall) continue;
+    // no solution
     if (closestNode.f === Infinity) return vistedNodes;
     closestNode.visited = true;
     vistedNodes.push(closestNode);

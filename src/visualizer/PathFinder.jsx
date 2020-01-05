@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node/Node";
+import NavBar from "../Nav/NavBar";
 import "./PathFinder.css";
 import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra";
 import { astar, astarShortest } from "./algorithms/astar.js";
 
+let START_ROW = 10;
+let START_COL = 5;
+let FINISH_ROW = 10;
+let FINISH_COL = 45;
 const PathFinder = props => {
   const [grid, setGrid] = useState([]);
-  const [mouse, setMouse] = useState({ mousePressed: false });
-
-  const START_ROW = 10;
-  const START_COL = 5;
-  const FINISH_ROW = 10;
-  const FINISH_COL = 45;
+  // const [functions, setFunctions] = useState()
+  const [mouse, setMouse] = useState({
+    mousePressed: false,
+    isStart: false,
+    isFinish: false
+  });
 
   useEffect(() => {
+    console.log(FINISH_COL, FINISH_ROW);
     const nodes = getInitialGrid();
     setGrid(nodes);
   }, []);
@@ -118,19 +124,53 @@ const PathFinder = props => {
   }
 
   function mouseDown(row, col) {
-    setMouse({
-      mousePressed: true
-    });
+    if (row == START_ROW && col == START_COL) {
+      setMouse({
+        mousePressed: true,
+        isStart: true,
+        isFinish: false
+      });
+    } else if (row == FINISH_ROW && col == FINISH_COL) {
+      setMouse({
+        mousePressed: true,
+        isStart: false,
+        isFinish: true
+      });
+    } else {
+      setMouse({
+        mousePressed: true,
+        isStart: false,
+        isFinish: false
+      });
+    }
   }
+
   function mouseUp(row, col) {
     setMouse({
-      mousePressed: false
+      mousePressed: false,
+      isStart: false,
+      isFinish: false
     });
   }
   function mouseEnter(row, col) {
+    // console.log(row, col);
     const newGrid = grid.slice();
     const node = newGrid[row][col];
-    if (mouse.mousePressed) {
+    if (mouse.mousePressed && mouse.isFinish) {
+      FINISH_ROW = row;
+      FINISH_COL = col;
+      const testGrid = getInitialGrid();
+      const newNode = { ...node, isFinish: FINISH_ROW && FINISH_COL };
+      testGrid[row][col] = newNode;
+      setGrid(testGrid);
+    } else if (mouse.mousePressed && mouse.isStart) {
+      START_ROW = row;
+      START_COL = col;
+      const testGrid = getInitialGrid();
+      const newNode = { ...node, isStart: START_ROW && START_COL };
+      testGrid[row][col] = newNode;
+      setGrid(testGrid);
+    } else if (mouse.mousePressed) {
       const newNode = { ...node, isWall: true };
       newGrid[row][col] = newNode;
       setGrid(newGrid);
@@ -161,8 +201,17 @@ const PathFinder = props => {
       const element = grid[i];
       for (let j = 0; j < element.length; j++) {
         console.log(element[j]);
-        if (element[j].isWall || element[j].isStart || element[j].isFinish) {
+        if (element[j].isWall) {
           continue;
+        }
+        if (element[j].isStart) {
+          document.getElementById(
+            `node-${element[j].row}-${element[j].col}`
+          ).className = "node node-start";
+        } else if (element[j].isFinish) {
+          document.getElementById(
+            `node-${element[j].row}-${element[j].col}`
+          ).className = "node node-finish";
         } else {
           document.getElementById(
             `node-${element[j].row}-${element[j].col}`
@@ -174,10 +223,13 @@ const PathFinder = props => {
 
   return (
     <div className="main-container">
-      <button onClick={() => VisualizeDijkstra()}>Visualize</button>
-      <button onClick={() => resetButton()}>Reset</button>
-      <button onClick={() => VisualizeAstar()}>Astar</button>
-      <button onClick={() => removeVisted()}>Asdddtar</button>
+      <NavBar
+        VisualizeDijkstra={() => VisualizeDijkstra()}
+        resetButton={() => resetButton()}
+        VisualizeAstar={() => VisualizeAstar()}
+        removeVisted={() => removeVisted()}
+      ></NavBar>
+      <button onClick={() => console.log(FINISH_COL, FINISH_ROW)}>ff</button>
       <div className="main-grid">
         {grid.map((row, rowId) => {
           return (

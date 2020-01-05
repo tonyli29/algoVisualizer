@@ -4,7 +4,11 @@ import "./visualizer/PathFinder";
 import PathFinder from "./visualizer/PathFinder";
 
 const App = props => {
-  return <PathFinder></PathFinder>;
+  return (
+    <div>
+      <PathFinder></PathFinder>;
+    </div>
+  );
 };
 
 export default App;
