@@ -153,7 +153,6 @@ const PathFinder = props => {
     });
   }
   function mouseEnter(row, col) {
-    // console.log(row, col);
     const newGrid = grid.slice();
     const node = newGrid[row][col];
     if (mouse.mousePressed && mouse.isFinish) {
