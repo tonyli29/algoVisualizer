@@ -9,9 +9,10 @@ let START_ROW = 10;
 let START_COL = 5;
 let FINISH_ROW = 10;
 let FINISH_COL = 45;
+let GRID_LENGTH = 50;
+let GRID_HEIGHT = 20;
 const PathFinder = props => {
   const [grid, setGrid] = useState([]);
-  // const [functions, setFunctions] = useState()
   const [mouse, setMouse] = useState({
     mousePressed: false,
     isStart: false,
@@ -26,9 +27,9 @@ const PathFinder = props => {
 
   const getInitialGrid = () => {
     const initialGrid = [];
-    for (let row = 0; row < 20; row++) {
+    for (let row = 0; row < GRID_HEIGHT; row++) {
       const currentRow = [];
-      for (let col = 0; col < 50; col++) {
+      for (let col = 0; col < GRID_LENGTH; col++) {
         const currentNode = createNode(col, row);
         currentRow.push(currentNode);
       }
@@ -65,13 +66,13 @@ const PathFinder = props => {
         );
         setTimeout(() => {
           animateShortestPath(shortestPath);
-        }, 10 * i);
+        }, 7 * i);
       }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 10 * i);
+      }, 7 * i);
     }
   }
 
@@ -81,13 +82,13 @@ const PathFinder = props => {
         const shortestPath = astarShortest(grid[FINISH_ROW][FINISH_COL]);
         setTimeout(() => {
           animateShortestPath(shortestPath);
-        }, 7 * i);
+        }, 5 * i);
       }
       setTimeout(() => {
         const node = visitedNodesforAnimation[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 7 * i);
+      }, 5 * i);
     }
   }
 
@@ -228,7 +229,6 @@ const PathFinder = props => {
         VisualizeAstar={() => VisualizeAstar()}
         removeVisted={() => removeVisted()}
       ></NavBar>
-      <button onClick={() => console.log(FINISH_COL, FINISH_ROW)}>ff</button>
       <div className="main-grid">
         {grid.map((row, rowId) => {
           return (

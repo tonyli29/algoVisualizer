@@ -1,7 +1,8 @@
 .node {
   width: 50px;
   height: 50px;
-  outline: 1px solid #dbbaff;
+  border: 1px solid rgba(102, 255, 255, 0.2);
+  background-color: white;
   display: inline-block;
 }
 .node-start {
@@ -11,7 +12,7 @@
   background-color: blue;
 }
 .node-visited {
-  background-color: #bf85ff;
+  background-color: rgb(102, 255, 255);
   animation-name: visited;
   animation-fill-mode: fowards;
   animation-duration: 1.5s;
@@ -20,29 +21,24 @@
 @keyframes visited {
   from {
     transform: scale(0.3);
-    background-color: #ff8585;
+    background-color: #ccf3ff;
   }
   to {
     transform: scale(1);
-    background-color: #bf85ff;
+    background-color: rgb(102, 255, 255);
   }
 }
-@keyframes t {
-  from {
-    background-color: yellow;
-  }
-  to {
-    background-color: #bf85ff;
-  }
-}
+
 .node-wall {
-  background-color: grey;
+  background-color: #737373;
+  border: 1px solid #737373;
 }
 .node-tracker {
   background-color: yellow;
 }
 .node-shortest {
-  background-color: hotpink;
+  background-color: rgb(0, 172, 230);
+  border: 1px solid rgb(0, 172, 230);
   animation-name: shortest;
   animation-fill-mode: fowards;
   animation-duration: 0.5s;

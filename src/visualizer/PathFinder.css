@@ -1,8 +1,16 @@
 .main-container {
   text-align: center;
+  background-color: rgb(204, 204, 204);
 }
 .main-grid {
-  width: 100%;
+  /* width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px; */
+  display: grid;
+  grid-template-columns: auto;
+  /* background-color: #2196f3; */
+  /* padding: 10px; */
+}
+.main-grid div {
+  height: 50px;
 }
