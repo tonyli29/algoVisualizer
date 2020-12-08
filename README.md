@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Full app at https://algov.herokuapp.com/
 
 ## Available Scripts
 
