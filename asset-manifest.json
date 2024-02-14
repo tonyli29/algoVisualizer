@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/algoVisualizer/static/css/main.c2a604b4.chunk.css",
+    "main.js": "/algoVisualizer/static/js/main.d4abfa8c.chunk.js",
+    "main.js.map": "/algoVisualizer/static/js/main.d4abfa8c.chunk.js.map",
+    "runtime-main.js": "/algoVisualizer/static/js/runtime-main.15bff50d.js",
+    "runtime-main.js.map": "/algoVisualizer/static/js/runtime-main.15bff50d.js.map",
+    "static/css/2.17e5ed98.chunk.css": "/algoVisualizer/static/css/2.17e5ed98.chunk.css",
+    "static/js/2.ad0178e3.chunk.js": "/algoVisualizer/static/js/2.ad0178e3.chunk.js",
+    "static/js/2.ad0178e3.chunk.js.map": "/algoVisualizer/static/js/2.ad0178e3.chunk.js.map",
+    "index.html": "/algoVisualizer/index.html",
+    "precache-manifest.7b2857f295e5f091767d6a3fe9eddd3d.js": "/algoVisualizer/precache-manifest.7b2857f295e5f091767d6a3fe9eddd3d.js",
+    "service-worker.js": "/algoVisualizer/service-worker.js",
+    "static/css/2.17e5ed98.chunk.css.map": "/algoVisualizer/static/css/2.17e5ed98.chunk.css.map",
+    "static/css/main.c2a604b4.chunk.css.map": "/algoVisualizer/static/css/main.c2a604b4.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.15bff50d.js",
+    "static/css/2.17e5ed98.chunk.css",
+    "static/js/2.ad0178e3.chunk.js",
+    "static/css/main.c2a604b4.chunk.css",
+    "static/js/main.d4abfa8c.chunk.js"
+  ]
+}
