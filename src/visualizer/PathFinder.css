@@ -8,9 +8,9 @@
   padding: 20px; */
   display: grid;
   grid-template-columns: auto;
-  /* background-color: #2196f3; */
+  background-color: white;
   /* padding: 10px; */
 }
 .main-grid div {
-  height: 50px;
+  height: 30px;
 }
