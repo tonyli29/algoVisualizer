@@ -1,6 +1,6 @@
 import React from "react";
 import "./NavBar.css";
-const NavBar = props => {
+const NavBar = (props) => {
   return (
     <div className="navbar-container">
       <button onClick={() => props.VisualizeDijkstra()}>
@@ -8,7 +8,6 @@ const NavBar = props => {
       </button>
       <button onClick={() => props.VisualizeAstar()}>Visualize A*</button>
       <button onClick={() => props.resetButton()}>Reset Board</button>
-      <button onClick={() => props.removeVisted()}>Reset Visted</button>
     </div>
   );
 };

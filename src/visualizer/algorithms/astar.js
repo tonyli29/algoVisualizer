@@ -11,7 +11,7 @@ export function astar(grid, startNode, finishNode) {
     if (closestNode.f === Infinity) return vistedNodes;
     closestNode.visited = true;
     vistedNodes.push(closestNode);
-    if (closestNode == finishNode) return vistedNodes;
+    if (closestNode === finishNode) return vistedNodes;
     // for animation
     updateUnvisitedNeighbors(closestNode, grid, finishNode);
   }
@@ -30,7 +30,6 @@ function heuristic(currentNode, finishNode) {
 
 function updateUnvisitedNeighbors(node, grid, finishNode) {
   const unvistedNeighbors = getUnvisitedNeighbors(node, grid);
-  const getNeighbors = getAllNeighbors(node, grid);
   for (const nodes of unvistedNeighbors) {
     nodes.g = node.g + 1;
     nodes.previousNode = node;
@@ -49,7 +48,7 @@ function getUnvisitedNeighbors(node, grid) {
   // for (let i = 0; i < diagonalNeighbors.length; i++) {
   //   neighbors.push(diagonalNeighbors[i]);
   // }
-  return neighbors.filter(neighbors => !neighbors.visited);
+  return neighbors.filter((neighbors) => !neighbors.visited);
 }
 
 function getAllNeighbors(node, grid) {

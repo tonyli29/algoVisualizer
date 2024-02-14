@@ -2,7 +2,6 @@ export function dijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
   const vistedNodes = [];
   const unvistedNodes = allNodes(grid);
-  var UP = false;
   while (!!unvistedNodes.length) {
     sortNodesDistance(unvistedNodes);
     const closestNode = unvistedNodes.shift();
@@ -10,25 +9,7 @@ export function dijkstra(grid, startNode, finishNode) {
     if (closestNode.distance === Infinity) return vistedNodes;
     closestNode.visited = true;
     vistedNodes.push(closestNode);
-    // for animation
-    if (closestNode == finishNode) return vistedNodes;
-
-    // if (UP) {
-    //   updateUnvisitedNeighborsUP(closestNode, grid);
-    // } else {
-    //   updateUnvisitedNeighborsDOWN(closestNode, grid);
-    // }
-
-    // updateUnvisitedNeighborsUP(closestNode, grid);
-    // if (closestNode.previousNode !== null) {
-    //   if (closestNode.previousNode.row > closestNode.row) {
-    //     var UP = true;
-    //   } else if (closestNode.previousNode.row < closestNode.row) {
-    //     var UP = false;
-    //   }
-    // } else {
-    //   updateUnvisitedNeighborsDOWN(closestNode, grid);
-    // }
+    if (closestNode === finishNode) return vistedNodes;
     updateUnvisitedNeighborsDOWN(closestNode, grid);
   }
 }
@@ -78,77 +59,60 @@ export function getDiagonalNeighbors(node, grid) {
   const { row, col } = node;
   if (row === 0 && col === 0) {
     diagonalNeighbors.push(grid[row + 1][col + 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (row === 0 && col === 49) {
     diagonalNeighbors.push(grid[row + 1][col - 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (row === 19 && col === 0) {
     diagonalNeighbors.push(grid[row - 1][col + 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (row === 19 && col === 49) {
     diagonalNeighbors.push(grid[row - 1][col - 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (row === 0) {
     diagonalNeighbors.push(grid[row + 1][col - 1], grid[row + 1][col + 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (row === 19) {
     diagonalNeighbors.push(grid[row - 1][col - 1], grid[row - 1][col + 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (col === 0) {
     diagonalNeighbors.push(grid[row + 1][col + 1], grid[row - 1][col + 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (col === 49) {
     diagonalNeighbors.push(grid[row + 1][col - 1], grid[row - 1][col - 1]);
-    // console.log(diagonalNeighbors);
     return diagonalNeighbors;
   }
   if (row > 0)
     diagonalNeighbors.push(grid[row - 1][col - 1], grid[row - 1][col + 1]);
   if (row < grid.length - 1)
     diagonalNeighbors.push(grid[row + 1][col - 1], grid[row + 1][col + 1]);
-  // console.log(diagonalNeighbors);
   return diagonalNeighbors;
 }
 
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
-  const diagonalNeighbors = getDiagonalNeighbors(node, grid);
   const { col, row } = node;
   if (row > 0) neighbors.push(grid[row - 1][col]);
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  // for (let i = 0; i < diagonalNeighbors.length; i++) {
-  //   neighbors.push(diagonalNeighbors[i]);
-  // }
-  return neighbors.filter(neighbors => !neighbors.visited);
+  return neighbors.filter((neighbors) => !neighbors.visited);
 }
 
 function getAllNeighbors(node, grid) {
   const neighbors = [];
-  const diagonalNeighbors = getDiagonalNeighbors(node, grid);
   const { col, row } = node;
   if (row > 0) neighbors.push(grid[row - 1][col]);
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  // for (let i = 0; i < diagonalNeighbors.length; i++) {
-  //   neighbors.push(diagonalNeighbors[i]);
-  // }
   return neighbors;
 }
 

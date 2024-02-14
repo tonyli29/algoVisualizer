@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Node from "./Node/Node";
 import NavBar from "../Nav/NavBar";
 import "./PathFinder.css";
@@ -11,21 +11,14 @@ let FINISH_ROW = 10;
 let FINISH_COL = 45;
 let GRID_LENGTH = 50;
 let GRID_HEIGHT = 20;
-const PathFinder = props => {
+const PathFinder = (props) => {
   const [grid, setGrid] = useState([]);
   const [mouse, setMouse] = useState({
     mousePressed: false,
     isStart: false,
-    isFinish: false
+    isFinish: false,
   });
-
-  useEffect(() => {
-    console.log(FINISH_COL, FINISH_ROW);
-    const nodes = getInitialGrid();
-    setGrid(nodes);
-  }, []);
-
-  const getInitialGrid = () => {
+  const getInitialGrid = useCallback(() => {
     const initialGrid = [];
     for (let row = 0; row < GRID_HEIGHT; row++) {
       const currentRow = [];
@@ -36,7 +29,13 @@ const PathFinder = props => {
       initialGrid.push(currentRow);
     }
     return initialGrid;
-  };
+  }, []);
+
+  useEffect(() => {
+    console.log(FINISH_COL, FINISH_ROW);
+    const nodes = getInitialGrid();
+    setGrid(nodes);
+  }, [getInitialGrid]);
 
   const createNode = (col, row) => {
     return {
@@ -54,7 +53,7 @@ const PathFinder = props => {
       diagonal: [],
       f: Infinity,
       g: Infinity,
-      h: 0
+      h: 0,
     };
   };
 
@@ -103,6 +102,7 @@ const PathFinder = props => {
   }
 
   function VisualizeDijkstra() {
+    removeVisted();
     const START = grid[START_ROW][START_COL];
     const FINISH = grid[FINISH_ROW][FINISH_COL];
     const visitedNodesforAnimation = dijkstra(grid, START, FINISH);
@@ -110,6 +110,7 @@ const PathFinder = props => {
   }
 
   function VisualizeAstar() {
+    removeVisted();
     const START = grid[START_ROW][START_COL];
     const FINISH = grid[FINISH_ROW][FINISH_COL];
     const visitedNodesforAnimation = astar(grid, START, FINISH);
@@ -129,19 +130,19 @@ const PathFinder = props => {
       setMouse({
         mousePressed: true,
         isStart: true,
-        isFinish: false
+        isFinish: false,
       });
     } else if (row == FINISH_ROW && col == FINISH_COL) {
       setMouse({
         mousePressed: true,
         isStart: false,
-        isFinish: true
+        isFinish: true,
       });
     } else {
       setMouse({
         mousePressed: true,
         isStart: false,
-        isFinish: false
+        isFinish: false,
       });
     }
   }
@@ -150,7 +151,7 @@ const PathFinder = props => {
     setMouse({
       mousePressed: false,
       isStart: false,
-      isFinish: false
+      isFinish: false,
     });
   }
   function mouseEnter(row, col) {
@@ -200,7 +201,6 @@ const PathFinder = props => {
     for (let i = 0; i < grid.length; i++) {
       const element = grid[i];
       for (let j = 0; j < element.length; j++) {
-        console.log(element[j]);
         if (element[j].isWall) {
           continue;
         }

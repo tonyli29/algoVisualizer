@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "./Node.css";
 
-const Node = props => {
-  const [state, setState] = useState([]);
-
+const Node = (props) => {
   const classNames = props.isStart
     ? "node-start"
     : props.isFinish
@@ -22,9 +20,7 @@ const Node = props => {
       onMouseDown={() => props.mouseDown(props.row, props.col)}
       onMouseUp={() => props.mouseUp(props.row, props.col)}
       onMouseEnter={() => props.mouseEnter(props.row, props.col)}
-    >
-      {/* {props.row}|{props.col} */}
-    </div>
+    ></div>
   );
 };
 export default Node;
